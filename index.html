@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!--
+    Esta versão apresenta um design mais moderno para a landing page ClariSense.
+    Inclui cartões com ícones e animações, uma secção de etapas actualizada (inclui o
+    passo de pagamento e pedido de feedback) e uma menção ao impacto social
+    (doação a uma associação). O objectivo é tornar a página mais dinâmica
+    e visualmente apelativa, mantendo a essência de autoconhecimento e clareza mental.
+  -->
+  <title>ClariSense — Descobre a tua clareza mental</title>
+  <meta name="description" content="Autoavaliação mental com IA. Responde ao questionário, recebe um relatório personalizado e apoia causas sociais." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --brand: #10b981;
+      --brand-dark: #059669;
+      --accent: #34d399;
+    }
+    html { scroll-behavior: smooth; }
+    body { background-color: #f9fafb; }
+    .card { box-shadow: 0 10px 25px rgba(0,0,0,0.03); transition: transform 0.3s ease; }
+    .card:hover { transform: translateY(-4px); }
+    .icon-wrapper { display: flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: 9999px; }
+    .step-card { position: relative; overflow: hidden; }
+    .step-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 1rem;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--accent), #a7f3d0);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+    }
+  </style>
+</head>
+<body class="font-Inter antialiased text-slate-900">
+  <!-- Navegação -->
+  <header class="sticky top-0 z-30 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2" aria-label="Página inicial ClariSense">
+        <img src="clarisense_logo.png" alt="ClariSense logo" class="w-9 h-9" />
+        <span class="text-xl font-extrabold">ClariSense</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="#beneficios" class="hover:text-emerald-600 transition">Porquê ClariSense</a>
+        <a href="#passos" class="hover:text-emerald-600 transition">Como funciona</a>
+        <a href="#planos" class="hover:text-emerald-600 transition">Planos</a>
+        <a href="#faq" class="hover:text-emerald-600 transition">FAQ</a>
+      </nav>
+      <a href="login.html" class="hidden sm:inline-flex items-center px-5 py-2 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">Entrar / Registar</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-emerald-100 to-emerald-50">
+    <div class="max-w-7xl mx-auto px-4 py-24 md:py-32 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-4">
+          Torna-te mais consciente <br class="hidden md:block"/> da tua <span class="text-emerald-600">claridade mental</span>.
+        </h1>
+        <p class="text-lg text-slate-700 max-w-md mb-6">
+          A nossa IA guia-te num auto-teste profundo para medires foco, energia e bem-estar. No final, parte da tua contribuição é doada a uma associação sem fins lucrativos.
+        </p>
+        <div class="flex flex-wrap gap-3 text-sm text-slate-700 mb-6">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">
+            <!-- Ícone de cadeado -->
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
+            Privado
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">
+            <!-- Ícone IA -->
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2" /><path d="M4 10h2v4H4M18 10h2v4h-2M10 4v2m4-2v2M10 18v2m4-2v2" /></svg>
+            IA personalizada
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">
+            <!-- Ícone Euro -->
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 6H9a3 3 0 000 6h5m-5 0h5a3 3 0 010 6H7" /></svg>
+            Menos que um café
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">
+            <!-- Ícone de coração/doação -->
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21s-6-4.35-9-8.5C1.35 9.23 2.5 4.5 6 4.5c2.5 0 3.57 1.5 6 4 2.43-2.5 3.5-4 6-4 3.5 0 4.65 4.73 3 8.0C18 16.65 12 21 12 21z" /></svg>
+            Impacto social
+          </span>
+        </div>
+        <div class="flex gap-4">
+      <a href="questionnaire.html" class="px-8 py-3 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">Começar agora</a>
+          <a href="#beneficios" class="px-8 py-3 rounded-full border border-emerald-200 text-emerald-600 hover:bg-emerald-50 font-semibold transition">Saber mais</a>
+        </div>
+      </div>
+      <div class="hidden md:flex items-center justify-center relative">
+        <!-- Placeholder gráfico / ilustração -->
+        <div class="relative w-full max-w-md p-6 rounded-3xl bg-white shadow-lg border border-slate-200">
+          <h3 class="text-sm font-semibold mb-4">Relatório Preview</h3>
+          <div class="grid grid-cols-3 gap-3">
+            <div class="p-4 bg-emerald-50 rounded-xl">
+              <span class="text-xs font-medium text-slate-500">Foco</span>
+              <div class="mt-2 h-2 rounded bg-emerald-200">
+                <div class="h-2 rounded bg-emerald-600" style="width: 72%;"></div>
+              </div>
+            </div>
+            <div class="p-4 bg-emerald-50 rounded-xl">
+              <span class="text-xs font-medium text-slate-500">Energia</span>
+              <div class="mt-2 h-2 rounded bg-emerald-200">
+                <div class="h-2 rounded bg-emerald-600" style="width: 60%;"></div>
+              </div>
+            </div>
+            <div class="p-4 bg-emerald-50 rounded-xl">
+              <span class="text-xs font-medium text-slate-500">Calma</span>
+              <div class="mt-2 h-2 rounded bg-emerald-200">
+                <div class="h-2 rounded bg-emerald-600" style="width: 66%;"></div>
+              </div>
+            </div>
+          </div>
+          <p class="mt-4 text-sm text-slate-600">Vê um resumo gratuito do teu estado mental. Para aceder ao relatório completo e recomendações, será solicitado um pagamento simbólico.</p>
+          <a href="questionnaire.html" class="mt-6 w-full inline-flex justify-center px-4 py-2 rounded-lg bg-slate-900 text-white font-semibold hover:bg-slate-800 transition">Desbloquear</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Secção de benefícios / Porquê ClariSense -->
+  <section id="beneficios" class="py-20">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12">Porquê ClariSense?</h2>
+      <div class="grid md:grid-cols-4 gap-6">
+        <div class="p-6 bg-white rounded-2xl border border-slate-200 card flex flex-col items-center text-center">
+          <div class="icon-wrapper bg-emerald-100 text-emerald-600 mb-4">
+            <!-- ícone cérebro -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 8a3 3 0 00-3 3v1a3 3 0 003 3h.5m-1.5-4h-1m1 3h-1m16-3h-1m1 3h-1M8 12v1a3 3 0 003 3h2m0-8h2a3 3 0 003-3V4a3 3 0 00-3-3h-4a3 3 0 00-3 3v1a3 3 0 003 3z" /></svg>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Autoavaliação inteligente</h3>
+          <p class="text-slate-600">IA avançada analisa o teu foco, energia e calma com precisão.</p>
+        </div>
+        <div class="p-6 bg-white rounded-2xl border border-slate-200 card flex flex-col items-center text-center">
+          <div class="icon-wrapper bg-emerald-100 text-emerald-600 mb-4">
+            <!-- ícone relâmpago -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Resultados instantâneos</h3>
+          <p class="text-slate-600">Recebe um resumo em segundos e analisa o teu progresso a qualquer momento.</p>
+        </div>
+        <div class="p-6 bg-white rounded-2xl border border-slate-200 card flex flex-col items-center text-center">
+          <div class="icon-wrapper bg-emerald-100 text-emerald-600 mb-4">
+            <!-- ícone chat -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" /></svg>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Acompanhamento contínuo</h3>
+          <p class="text-slate-600">Novos testes e relatórios semanais para acompanhares a tua evolução.</p>
+        </div>
+        <div class="p-6 bg-white rounded-2xl border border-slate-200 card flex flex-col items-center text-center">
+          <div class="icon-wrapper bg-emerald-100 text-emerald-600 mb-4">
+            <!-- ícone coração/doação -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21s-6-4.35-9-8.5C1.35 9.23 2.5 4.5 6 4.5c2.5 0 3.57 1.5 6 4 2.43-2.5 3.5-4 6-4 3.5 0 4.65 4.73 3 8.0C18 16.65 12 21 12 21z" /></svg>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Impacto social</h3>
+          <p class="text-slate-600">Uma parte da tua contribuição é doada para apoiar causas sociais e associações.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Secção passos / Como funciona -->
+  <section id="passos" class="py-20 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12">Como funciona</h2>
+      <div class="grid md:grid-cols-4 gap-6">
+        <div class="p-6 bg-white rounded-2xl border border-slate-200 card flex flex-col items-start step-card">
+          <div class="icon-wrapper bg-emerald-100 text-emerald-600 mb-4">
+            <!-- ícone lista / formulário -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+          </div>
+          <h4 class="font-bold text-lg mb-2">1. Responde</h4>
+          <p class="text-slate-600">Preenche um questionário rápido e intuitivo sobre o teu estado actual.</p>
+        </div>
+        <div class="p-6 bg-white rounded-2xl border border-slate-200 card flex flex-col items-start step-card">
+          <div class="icon-wrapper bg-emerald-100 text-emerald-600 mb-4">
+            <!-- ícone gráfico / preview -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12h16M4 6h16M4 18h16" /></svg>
+          </div>
+          <h4 class="font-bold text-lg mb-2">2. Vê o resumo</h4>
+          <p class="text-slate-600">Recebe um preview gratuito com uma análise básica do teu resultado.</p>
+        </div>
+        <div class="p-6 bg-white rounded-2xl border border-slate-200 card flex flex-col items-start step-card">
+          <div class="icon-wrapper bg-emerald-100 text-emerald-600 mb-4">
+            <!-- ícone pagamento -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h18M3 6h18M3 14h18M3 18h18" /></svg>
+          </div>
+          <h4 class="font-bold text-lg mb-2">3. Desbloqueia</h4>
+          <p class="text-slate-600">Faz um pagamento simbólico para aceder ao relatório completo e recomendações.</p>
+        </div>
+        <div class="p-6 bg-white rounded-2xl border border-slate-200 card flex flex-col items-start step-card">
+          <div class="icon-wrapper bg-emerald-100 text-emerald-600 mb-4">
+            <!-- ícone feedback / mensagem -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" /></svg>
+          </div>
+          <h4 class="font-bold text-lg mb-2">4. Dá feedback</h4>
+          <p class="text-slate-600">Partilha a tua experiência connosco para melhorarmos continuamente.</p>
+        </div>
+      </div>
+      <div class="mt-12 text-center">
+        <a href="questionnaire.html" class="inline-flex px-8 py-3 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">Fazer o teste</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Secção Planos -->
+  <section id="planos" class="py-20">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12">Planos futuros</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="relative p-8 rounded-2xl border border-slate-200 card bg-white text-center overflow-hidden">
+          <!-- Borda gradiente -->
+          <div class="absolute inset-0 rounded-2xl z-0" style="background: linear-gradient(135deg, var(--accent), #a7f3d0); opacity:0.15;"></div>
+          <h3 class="text-xl font-bold mb-2 relative z-10">Plano Pro</h3>
+          <p class="text-slate-600 mb-4 relative z-10">Recursos avançados para um autodiagnóstico mais profundo.</p>
+          <span class="inline-block px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 font-medium text-sm relative z-10">Em breve</span>
+        </div>
+        <div class="relative p-8 rounded-2xl border border-slate-200 card bg-white text-center overflow-hidden">
+          <div class="absolute inset-0 rounded-2xl z-0" style="background: linear-gradient(135deg, var(--accent), #a7f3d0); opacity:0.15;"></div>
+          <h3 class="text-xl font-bold mb-2 relative z-10">Plano Premium</h3>
+          <p class="text-slate-600 mb-4 relative z-10">Acesso ilimitado a relatórios personalizados e ferramentas exclusivas.</p>
+          <span class="inline-block px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 font-medium text-sm relative z-10">Em breve</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-20 bg-slate-50">
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12">Perguntas frequentes</h2>
+      <div class="space-y-4">
+        <details class="p-5 bg-white rounded-xl border border-slate-200">
+          <summary class="font-semibold cursor-pointer">O teste é gratuito?</summary>
+          <p class="mt-2 text-slate-600">Sim. Podes realizar o questionário e receber um preview gratuito. Para aceder ao relatório completo, existe um pagamento simbólico.</p>
+        </details>
+        <details class="p-5 bg-white rounded-xl border border-slate-200">
+          <summary class="font-semibold cursor-pointer">Como funciona a doação?</summary>
+          <p class="mt-2 text-slate-600">Uma percentagem do valor pago por cada relatório é destinada a uma associação sem fins lucrativos. Comunicaremos regularmente o impacto das doações.</p>
+        </details>
+        <details class="p-5 bg-white rounded-xl border border-slate-200">
+          <summary class="font-semibold cursor-pointer">Posso fazer vários testes?</summary>
+          <p class="mt-2 text-slate-600">Claro! Podes repetir o teste sempre que quiseres para acompanhar a tua evolução ao longo do tempo.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer class="py-10 border-t border-slate-100 bg-white">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-600">
+      <p>© <span id="year"></span> ClariSense — Todos os direitos reservados.</p>
+      <div class="flex gap-4">
+        <a href="#" id="privacy-link" class="hover:text-slate-800">Política de Privacidade</a>
+        <a href="#" id="terms-link" class="hover:text-slate-800">Termos</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal (para política e termos) -->
+  <div id="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded-xl w-11/12 md:w-2/3 max-h-[90vh] overflow-y-auto">
+      <h3 id="modal-title" class="text-xl font-bold mb-4"></h3>
+      <div id="modal-content" class="text-sm text-slate-700 space-y-2"></div>
+      <button id="modal-close" class="mt-6 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">Fechar</button>
+    </div>
+  </div>
+
+  <script>
+    // actualiza o ano
+    document.getElementById('year').textContent = new Date().getFullYear();
+    // Função para mostrar modal de Política e Termos
+    function showModal(title, content) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-content').innerHTML = content;
+      document.getElementById('modal').classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+    const privacyLink = document.getElementById('privacy-link');
+    const termsLink = document.getElementById('terms-link');
+    const modalClose = document.getElementById('modal-close');
+    if (privacyLink) {
+      privacyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        showModal('Política de Privacidade',
+          `<p>A tua informação é tratada com confidencialidade. Utilizamos os teus dados apenas para gerar o relatório personalizado e nunca partilhamos com terceiros.</p>` +
+          `<p>Podes solicitar a eliminação dos teus dados a qualquer momento.</p>`);
+      });
+    }
+    if (termsLink) {
+      termsLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        showModal('Termos e Condições',
+          `<p>Ao utilizares o ClariSense, concordas em usar o serviço apenas para fins pessoais. Não é permitida a redistribuição do conteúdo sem autorização.</p>` +
+          `<p>O relatório fornecido não substitui aconselhamento médico ou psicológico profissional.</p>`);
+      });
+    }
+    if (modalClose) {
+      modalClose.addEventListener('click', function () {
+        document.getElementById('modal').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      });
+    }
+    document.getElementById('modal').addEventListener('click', function (e) {
+      if (e.target === this) {
+        this.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
+    });
+  </script>
+</body>
+</html>

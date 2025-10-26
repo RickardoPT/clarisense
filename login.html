@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClariSense — Entrar ou Registar</title>
+  <meta name="description" content="Acede à tua conta ClariSense ou cria uma nova. Descobre e melhora a tua clareza mental." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { background-color: #f8fafc; }
+    .card { box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+  </style>
+</head>
+<body class="antialiased text-slate-900">
+  <!-- Cabeçalho com marca e link para a página inicial -->
+  <header class="py-4 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+      <a href="clarisense_landing.html" class="flex items-center gap-2" aria-label="Voltar à página inicial">
+        <img src="clarisense_logo.png" alt="ClariSense logo" class="w-8 h-8" />
+        <span class="font-extrabold text-lg">ClariSense</span>
+      </a>
+      <a href="clarisense_landing.html" class="text-sm text-emerald-600 hover:underline">Voltar ao início</a>
+    </div>
+  </header>
+
+  <!-- Conteúdo principal -->
+  <main class="py-16">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-12">
+      <!-- Secção de Login -->
+      <div class="bg-white p-8 rounded-2xl card border border-slate-200">
+        <h2 class="text-2xl font-bold mb-6">Entrar</h2>
+        <form action="#" method="post" class="space-y-4">
+          <div>
+            <label for="login-email" class="block text-sm font-medium text-slate-700">Email</label>
+            <input id="login-email" type="email" required class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-emerald-500 focus:ring-emerald-500" placeholder="o@exemplo.com" />
+          </div>
+          <div>
+            <label for="login-password" class="block text-sm font-medium text-slate-700">Palavra-passe</label>
+            <input id="login-password" type="password" required class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-emerald-500 focus:ring-emerald-500" placeholder="••••••••" />
+          </div>
+          <button type="submit" class="w-full py-2 px-4 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">Entrar</button>
+        </form>
+        <p class="text-sm text-slate-600 mt-4">Ainda não tens conta? <a href="#registo" class="text-emerald-600 hover:underline">Cria aqui</a></p>
+      </div>
+
+      <!-- Secção de Registo -->
+      <div id="registo" class="bg-white p-8 rounded-2xl card border border-slate-200">
+        <h2 class="text-2xl font-bold mb-6">Criar conta</h2>
+        <form action="#" method="post" class="space-y-4">
+          <div>
+            <label for="register-name" class="block text-sm font-medium text-slate-700">Nome</label>
+            <input id="register-name" type="text" class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-emerald-500 focus:ring-emerald-500" placeholder="O teu nome" />
+          </div>
+          <div>
+            <label for="register-email" class="block text-sm font-medium text-slate-700">Email</label>
+            <input id="register-email" type="email" required class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-emerald-500 focus:ring-emerald-500" placeholder="o@exemplo.com" />
+          </div>
+          <div>
+            <label for="register-password" class="block text-sm font-medium text-slate-700">Palavra-passe</label>
+            <input id="register-password" type="password" required class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-emerald-500 focus:ring-emerald-500" placeholder="••••••••" />
+          </div>
+          <div>
+            <label for="register-confirm" class="block text-sm font-medium text-slate-700">Confirmar palavra-passe</label>
+            <input id="register-confirm" type="password" required class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-emerald-500 focus:ring-emerald-500" placeholder="••••••••" />
+          </div>
+          <button type="submit" class="w-full py-2 px-4 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">Registar</button>
+        </form>
+        <p class="text-sm text-slate-600 mt-4">Já tens conta? <a href="#" onclick="scrollToLogin(); return false;" class="text-emerald-600 hover:underline">Inicia sessão</a></p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Função para rolar de volta para o formulário de login a partir do link de registo
+    function scrollToLogin() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

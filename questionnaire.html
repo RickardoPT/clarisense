@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClariSense – Questionário de Autoconhecimento</title>
+  <meta name="description" content="Questionário interativo com IA para descobrir o teu estado mental e obter um relatório personalizado." />
+  <!-- Font and Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --brand: #10b981; /* emerald */
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .progress-bar {
+      height: 8px;
+      background-color: #d1fae5;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .progress {
+      height: 100%;
+      background-color: var(--brand);
+      transition: width 0.3s ease;
+    }
+    /* Modal overlay styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: #ffffff;
+      border-radius: 1rem;
+      padding: 2rem;
+      max-width: 28rem;
+      width: 90%;
+    }
+    /* Hide sections by default */
+    #question-section, #partial-report, #payment-section, #full-report {
+      display: none;
+    }
+    /* Simple fade in animation */
+    .fade-enter {
+      animation: fadeIn 0.5s forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-white text-slate-900">
+  <!-- Header -->
+  <header class="px-4 py-4 border-b border-slate-200 flex justify-between items-center">
+    <a href="clarisense_landing_v2.html" class="flex items-center gap-2" aria-label="Voltar ao início">
+      <img src="clarisense_logo.png" alt="ClariSense logo" class="w-8 h-8" />
+      <span class="text-lg font-bold">ClariSense</span>
+    </a>
+    <a href="clarisense_landing_v2.html" class="text-sm text-emerald-600 hover:text-emerald-700">Sair</a>
+  </header>
+
+  <!-- Modal de introdução -->
+  <div id="intro-modal" class="modal-overlay">
+    <div class="modal-content text-center">
+      <h2 class="text-2xl font-bold mb-4">Bem-vindo ao questionário</h2>
+      <p class="text-slate-700 mb-4">Este teste tem 15 perguntas e demora cerca de 3 minutos. Estás preparado?</p>
+      <button id="start-btn" class="mt-4 px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">Começar</button>
+    </div>
+  </div>
+
+  <!-- Secção de pergunta -->
+  <section id="question-section" class="max-w-3xl mx-auto mt-10 px-4">
+    <div class="mb-6">
+      <div class="progress-bar">
+        <div id="progress" class="progress" style="width: 0%;"></div>
+      </div>
+      <div id="progress-text" class="mt-2 text-sm text-slate-600"></div>
+    </div>
+    <div id="question-container" class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm fade-enter">
+      <h3 id="question-title" class="text-lg font-semibold"></h3>
+      <div class="mt-6 flex flex-col items-center">
+        <input id="slider" type="range" min="1" max="5" value="3" class="w-full" />
+        <div class="mt-2 flex justify-between w-full text-xs text-slate-500">
+          <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+        </div>
+        <p id="scale-label" class="mt-4 text-slate-700">Resposta: 3</p>
+      </div>
+      <div class="mt-8 flex justify-between">
+        <button id="prev-btn" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition" disabled>Anterior</button>
+        <button id="next-btn" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">Seguinte</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Relatório parcial -->
+  <section id="partial-report" class="max-w-3xl mx-auto mt-10 px-4 fade-enter">
+    <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+      <h3 class="text-2xl font-bold mb-4">Relatório Parcial</h3>
+      <p class="mb-4 text-slate-700">Aqui está um resumo dos teus resultados. Para veres o relatório completo com análise detalhada e recomendações personalizadas, desbloqueia por apenas <strong>€0,89</strong>.</p>
+      <div id="partial-summary" class="space-y-3"></div>
+      <div class="mt-6 text-center">
+        <!-- Link direto para checkout Stripe (modo teste) -->
+        <a href="https://buy.stripe.com/test_fZuaEX0Gd0xzbO5eBaao800" target="_blank" id="pay-btn" class="inline-block px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition">
+          Desbloquear relatório completo (€0,89)
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Secção de pagamento (simulada) desativada para usar checkout Stripe -->
+  <section id="payment-section" class="max-w-md mx-auto mt-10 px-4 fade-enter" style="display:none;">
+    <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+      <h3 class="text-xl font-bold mb-4">Pagamento</h3>
+      <p class="mb-4 text-slate-700">Simulação de checkout. Clica em "Confirmar pagamento" para continuar.</p>
+      <button id="confirm-payment-btn" class="w-full px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">Confirmar pagamento</button>
+    </div>
+  </section>
+
+  <!-- Relatório completo -->
+  <section id="full-report" class="max-w-3xl mx-auto mt-10 px-4 fade-enter">
+    <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+      <h3 class="text-2xl font-bold mb-4">Relatório Completo</h3>
+      <div id="full-summary" class="space-y-4"></div>
+      <div class="mt-6">
+        <h4 class="text-lg font-semibold">Recomendações</h4>
+        <ul id="recommendations" class="list-disc ml-6 mt-2 text-slate-700 space-y-1"></ul>
+      </div>
+      <div class="mt-6 p-4 rounded-lg bg-green-50 border border-green-200">
+        <p class="text-green-800 text-sm">Uma parte do valor do teu relatório será doada a uma associação de apoio à saúde mental. Obrigado pelo teu contributo!</p>
+      </div>
+      <div class="mt-8">
+        <h4 class="text-lg font-semibold mb-2">Dá‑nos o teu feedback</h4>
+        <p class="text-sm text-slate-700 mb-4">A tua opinião é essencial para continuarmos a melhorar a plataforma e o próprio site. Partilha o que gostaste ou o que podemos optimizar.</p>
+        <label class="block mb-2 text-sm text-slate-700" for="feedback-score">Avalia a tua experiência (0 a 10)</label>
+        <input id="feedback-score" type="number" min="0" max="10" class="w-full p-2 border border-slate-300 rounded-lg" />
+        <label class="block mt-4 mb-2 text-sm text-slate-700" for="feedback-comments">Sugestões ou comentários adicionais</label>
+        <textarea id="feedback-comments" rows="3" class="w-full p-2 border border-slate-300 rounded-lg"></textarea>
+        <button id="submit-feedback-btn" class="mt-4 px-5 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">Enviar Feedback</button>
+        <p id="feedback-thanks" class="mt-4 text-green-700 hidden">Obrigado pelo teu feedback!</p>
+      </div>
+
+      <!-- Secção criar conta após relatório -->
+      <div class="mt-10 p-6 border border-emerald-200 rounded-2xl bg-emerald-50">
+        <h4 class="text-lg font-semibold mb-2">Queres guardar os teus resultados?</h4>
+        <p class="text-sm text-slate-700 mb-4">
+          Cria uma conta ClariSense para guardar o teu histórico de relatórios, acompanhar a tua evolução e receberes um desconto de 50% no próximo relatório.
+        </p>
+        <a href="login.html" class="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">
+          Criar conta / Iniciar sessão
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Script para lógica do questionário -->
+  <script>
+    // Lista de perguntas e categorias atribuídas
+    // Perguntas mais elaboradas para uma autoavaliação profunda
+    // Lista de perguntas mais elaborada para a autoavaliação.
+    // Cada entrada contém o texto da pergunta e a categoria associada (focus, energy ou calm).
+    const questions = [
+      { text: 'Quantas horas dormes, em média, por noite? (1: menos de 5h | 5: mais de 9h)', category: 'energy' },
+      { text: 'Com que frequência sentes dificuldade em concentrar-te? (1: nunca | 5: sempre)', category: 'focus' },
+      { text: 'Quão motivado te sentes ao acordar para começar o dia? (1: nada motivado | 5: muito motivado)', category: 'energy' },
+      { text: 'Com que regularidade praticas exercício físico durante a semana? (1: nunca | 5: todos os dias)', category: 'energy' },
+      { text: 'Com que frequência te sentes sobrecarregado ou stressado? (1: nunca | 5: sempre)', category: 'calm' },
+      { text: 'Costumas concluir as tuas tarefas dentro do prazo definido? (1: nunca | 5: sempre)', category: 'focus' },
+      { text: 'Quão fácil é para ti desconectar‑te do trabalho ou estudo no final do dia? (1: muito difícil | 5: muito fácil)', category: 'calm' },
+      { text: 'Como avalias o teu nível de energia durante a maior parte do dia? (1: muito baixo | 5: muito alto)', category: 'energy' },
+      { text: 'Com que frequência planeias as tuas tarefas diárias com antecedência? (1: nunca | 5: sempre)', category: 'focus' },
+      { text: 'Quão satisfeito estás com a qualidade do teu sono? (1: muito insatisfeito | 5: muito satisfeito)', category: 'energy' },
+      { text: 'Quanto tempo dedicas a actividades de lazer ou hobbies por semana? (1: nenhum | 5: mais de 5h)', category: 'calm' },
+      { text: 'Como avalias o tempo que passas nas redes sociais diariamente? (1: menos de 1h | 5: mais de 5h)', category: 'focus' },
+      { text: 'Sentes que tens apoio emocional suficiente dos teus amigos e família? (1: nada | 5: muito)', category: 'calm' },
+      { text: 'Praticas alguma forma de mindfulness, meditação ou respiração consciente? (1: nunca | 5: sempre)', category: 'calm' },
+      { text: 'Consideras‑te uma pessoa organizada e produtiva? (1: nada | 5: extremamente)', category: 'focus' }
+    ];
+
+    let currentQuestion = 0;
+    const responses = [];
+
+    const startBtn = document.getElementById('start-btn');
+    const introModal = document.getElementById('intro-modal');
+    const questionSection = document.getElementById('question-section');
+    const questionTitle = document.getElementById('question-title');
+    const progressEl = document.getElementById('progress');
+    const progressText = document.getElementById('progress-text');
+    const slider = document.getElementById('slider');
+    const scaleLabel = document.getElementById('scale-label');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const partialReport = document.getElementById('partial-report');
+    const partialSummary = document.getElementById('partial-summary');
+    const payBtn = document.getElementById('pay-btn');
+    const paymentSection = document.getElementById('payment-section');
+    const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
+    const fullReport = document.getElementById('full-report');
+    const fullSummary = document.getElementById('full-summary');
+    const recommendationsList = document.getElementById('recommendations');
+    const submitFeedbackBtn = document.getElementById('submit-feedback-btn');
+    const feedbackThanks = document.getElementById('feedback-thanks');
+
+    // Event listeners
+    startBtn.addEventListener('click', () => {
+      introModal.style.display = 'none';
+      questionSection.style.display = 'block';
+      showQuestion();
+    });
+
+    slider.addEventListener('input', (e) => {
+      scaleLabel.textContent = 'Resposta: ' + e.target.value;
+    });
+
+    nextBtn.addEventListener('click', () => {
+      // Guarda a resposta corrente
+      responses[currentQuestion] = parseInt(slider.value);
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        // Finalizado
+        questionSection.style.display = 'none';
+        generatePartialReport();
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion(true);
+      }
+    });
+
+    // O link de pagamento Stripe abre numa nova aba. Não há necessidade de alternar para a secção de pagamento simulada.
+    // payBtn.addEventListener('click', () => {
+    //   partialReport.style.display = 'none';
+    //   paymentSection.style.display = 'block';
+    // });
+
+    confirmPaymentBtn.addEventListener('click', () => {
+      // Simula fim de pagamento com sucesso
+      paymentSection.style.display = 'none';
+      generateFullReport();
+    });
+
+    submitFeedbackBtn.addEventListener('click', () => {
+      // Mostra agradecimento
+      feedbackThanks.classList.remove('hidden');
+    });
+
+    function showQuestion(backwards = false) {
+      const q = questions[currentQuestion];
+      questionTitle.textContent = q.text;
+      // Se existir resposta prévia, define slider; senão define 3
+      slider.value = responses[currentQuestion] || 3;
+      scaleLabel.textContent = 'Resposta: ' + slider.value;
+      // Atualiza progresso
+      const progressPercent = ((currentQuestion) / questions.length) * 100;
+      progressEl.style.width = progressPercent + '%';
+      progressText.textContent = 'Pergunta ' + (currentQuestion + 1) + ' de ' + questions.length;
+      // Botões
+      prevBtn.disabled = currentQuestion === 0;
+      nextBtn.textContent = currentQuestion === questions.length - 1 ? 'Finalizar' : 'Seguinte';
+    }
+
+    function generatePartialReport() {
+      partialReport.style.display = 'block';
+      // Calcula médias por categoria
+      const scores = { focus: 0, energy: 0, calm: 0 };
+      const counts = { focus: 0, energy: 0, calm: 0 };
+      questions.forEach((q, idx) => {
+        const val = responses[idx] || 3;
+        scores[q.category] += val;
+        counts[q.category]++;
+      });
+      // Computa percentagens (0-100)
+      const percent = {};
+      Object.keys(scores).forEach(cat => {
+        percent[cat] = (scores[cat] / (counts[cat] * 5)) * 100;
+      });
+      // Cria resumo parcial (metade do valor real)
+      partialSummary.innerHTML = '';
+      Object.entries(percent).forEach(([cat, val]) => {
+        const barWidth = (val / 2).toFixed(0); // metade para parcial
+        const div = document.createElement('div');
+        div.classList.add('space-y-1');
+        const level = getLevelText(val);
+        div.innerHTML = `
+          <span class="text-sm font-medium capitalize text-slate-700">${cat}</span>
+          <div class="w-full h-2 bg-slate-200 rounded">
+            <div class="h-full bg-emerald-500 rounded" style="width: ${barWidth}%"></div>
+          </div>
+          <p class="text-xs text-slate-500">Nível de ${cat}: ${level}</p>
+        `;
+        partialSummary.appendChild(div);
+      });
+    }
+
+    /**
+     * Determina o nível textual a partir de um valor percentual.
+     * Valores < 40% => baixo; < 70% => moderado; >= 70% => alto
+     */
+    function getLevelText(val) {
+      if (val < 40) return 'baixo';
+      if (val < 70) return 'moderado';
+      return 'alto';
+    }
+
+    /**
+     * Gera uma análise textual detalhada para cada categoria com base na percentagem.
+     * @param {string} cat Nome da categoria (focus, energy ou calm)
+     * @param {number} val Valor percentual (0-100)
+     */
+    function getCategoryAnalysis(cat, val) {
+      let analysis = '';
+      switch(cat) {
+        case 'focus':
+          if (val < 40) {
+            analysis = 'A tua pontuação de foco é baixa. Isso indica dificuldade em manter a concentração ao longo do dia. Procura criar um ambiente livre de distrações e usa técnicas de gestão de tempo para melhorar a atenção.';
+          } else if (val < 70) {
+            analysis = 'O teu foco está num nível moderado. Tens uma boa base, mas ainda há margem para optimizar a tua concentração, por exemplo, com blocos de trabalho profundo e pausas regulares.';
+          } else {
+            analysis = 'O teu nível de foco é elevado. Consegues manter a atenção em tarefas importantes. Continua a aplicar as estratégias que resultam para ti e partilha-as com outros.';
+          }
+          break;
+        case 'energy':
+          if (val < 40) {
+            analysis = 'Os teus níveis de energia parecem baixos. Podes beneficiar de mais horas de sono de qualidade, alimentação equilibrada e actividade física regular para aumentares a vitalidade.';
+          } else if (val < 70) {
+            analysis = 'A tua energia é moderada. Para sentires mais vitalidade, tenta incluir pequenas pausas activas, hidratação e exercícios de respiração ao longo do dia.';
+          } else {
+            analysis = 'A tua energia está alta. Mantém as rotinas saudáveis de sono, exercício e alimentação que te mantêm cheio de energia.';
+          }
+          break;
+        case 'calm':
+          if (val < 40) {
+            analysis = 'Os teus níveis de calma são baixos. Podes estar a experimentar stress elevado. Considera adoptar práticas de mindfulness, yoga ou meditação para reduzires a ansiedade.';
+          } else if (val < 70) {
+            analysis = 'O teu equilíbrio emocional é moderado. Estás num caminho positivo, mas ainda tens espaço para melhorar. Estabelece uma rotina diária de relaxamento e autocuidado.';
+          } else {
+            analysis = 'Estás bastante calmo e equilibrado. As tuas práticas de gestão do stress estão a funcionar bem. Mantém-nas e continua a ouvir o teu corpo e mente.';
+          }
+          break;
+        default:
+          analysis = '';
+      }
+      return analysis;
+    }
+
+    function generateFullReport() {
+      fullReport.style.display = 'block';
+      // Calcula percentagens completas
+      const scores = { focus: 0, energy: 0, calm: 0 };
+      const counts = { focus: 0, energy: 0, calm: 0 };
+      questions.forEach((q, idx) => {
+        const val = responses[idx] || 3;
+        scores[q.category] += val;
+        counts[q.category]++;
+      });
+      const percent = {};
+      Object.keys(scores).forEach(cat => {
+        percent[cat] = (scores[cat] / (counts[cat] * 5)) * 100;
+      });
+      // Preenche barras completas com análises detalhadas
+      fullSummary.innerHTML = '';
+      Object.entries(percent).forEach(([cat, val]) => {
+        const div = document.createElement('div');
+        div.classList.add('space-y-2');
+        const analysis = getCategoryAnalysis(cat, val);
+        div.innerHTML = `
+          <h4 class="text-lg font-semibold capitalize">${cat} (${val.toFixed(0)}%)</h4>
+          <div class="w-full h-2 bg-slate-200 rounded mb-1">
+            <div class="h-full bg-emerald-500 rounded" style="width: ${val.toFixed(0)}%"></div>
+          </div>
+          <p class="text-sm text-slate-700">${analysis}</p>
+        `;
+        fullSummary.appendChild(div);
+      });
+      // Gera recomendações de acordo com percentuais
+      recommendationsList.innerHTML = '';
+      if (percent.focus < 50) {
+        addRecommendation('Estabelece blocos de tempo sem distrações para melhorar o foco e explora técnicas de gestão de tempo como o Pomodoro.');
+      } else if (percent.focus < 70) {
+        addRecommendation('Continua a reforçar o teu foco eliminando distrações e fazendo listas diárias de prioridades.');
+      } else {
+        addRecommendation('O teu foco é excelente — mantém as práticas que te ajudam a estar concentrado.');
+      }
+      if (percent.energy < 50) {
+        addRecommendation('Procura dormir mais horas, faz exercício regular e ajusta a tua alimentação para aumentar a energia.');
+      } else if (percent.energy < 70) {
+        addRecommendation('Integra pausas activas e hidratação na tua rotina para elevar a energia.');
+      } else {
+        addRecommendation('A tua energia está alta — continua com os bons hábitos de sono, nutrição e actividade física.');
+      }
+      if (percent.calm < 50) {
+        addRecommendation('Pratica respiração profunda, meditação ou yoga para aumentar a calma e reduzir o stress.');
+      } else if (percent.calm < 70) {
+        addRecommendation('Dedica tempo diário a actividades relaxantes para manter o equilíbrio emocional.');
+      } else {
+        addRecommendation('Mantém as tuas estratégias de relaxamento — estás num bom estado de equilíbrio emocional.');
+      }
+    }
+
+    function addRecommendation(text) {
+      const li = document.createElement('li');
+      li.textContent = text;
+      recommendationsList.appendChild(li);
+    }
+  </script>
+</body>
+</html>
