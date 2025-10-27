@@ -65,11 +65,17 @@
 <body class="bg-white text-slate-900">
   <!-- Header -->
   <header class="px-4 py-4 border-b border-slate-200 flex justify-between items-center">
-    <a href="clarisense_landing_v2.html" class="flex items-center gap-2" aria-label="Voltar ao início">
+    <!-- Ajuste o link do logotipo para voltar à página inicial (index.html) -->
+    <a href="index.html" class="flex items-center gap-2" aria-label="Voltar ao início">
       <img src="clarisense_logo.png" alt="ClariSense logo" class="w-8 h-8" />
       <span class="text-lg font-bold">ClariSense</span>
     </a>
-    <a href="clarisense_landing_v2.html" class="text-sm text-emerald-600 hover:text-emerald-700">Sair</a>
+    <!-- O botão "Sair" devolve o utilizador à landing page. Aqui usamos o caminho
+         relativo "index.html" porque a landing page é servida nesse ficheiro.
+         Apontar para a raiz ("/") no Vercel carrega o questionário, por isso
+         redirecionamos explicitamente para index.html para evitar um erro 404
+         e garantir que o utilizador retorna à página inicial. -->
+    <a href="index.html" class="text-sm text-emerald-600 hover:text-emerald-700">Sair</a>
   </header>
 
   <!-- Modal de introdução -->
@@ -112,8 +118,8 @@
       <p class="mb-4 text-slate-700">Aqui está um resumo dos teus resultados. Para veres o relatório completo com análise detalhada e recomendações personalizadas, desbloqueia por apenas <strong>€0,89</strong>.</p>
       <div id="partial-summary" class="space-y-3"></div>
       <div class="mt-6 text-center">
-        <!-- Link direto para checkout Stripe (modo teste) -->
-        <a href="https://buy.stripe.com/test_fZuaEX0Gd0xzbO5eBaao800" target="_blank" id="pay-btn" class="inline-block px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition">
+        <!-- Link direto para o checkout Stripe. Utiliza o link público gerado no painel do Stripe -->
+        <a href="https://buy.stripe.com/28E4gz2NV5ou8TEaJB4wM00" target="_blank" id="pay-btn" class="inline-block px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition">
           Desbloquear relatório completo (€0,89)
         </a>
       </div>
@@ -191,6 +197,13 @@
 
     let currentQuestion = 0;
     const responses = [];
+
+    // Mapeamento entre códigos de categoria internos e rótulos amigáveis usados no relatório.
+    const categoryLabels = {
+      focus: 'Clareza Mental',
+      energy: 'Energia Vital',
+      calm: 'Paz Interior'
+    };
 
     const startBtn = document.getElementById('start-btn');
     const introModal = document.getElementById('intro-modal');
@@ -291,6 +304,13 @@
       Object.keys(scores).forEach(cat => {
         percent[cat] = (scores[cat] / (counts[cat] * 5)) * 100;
       });
+      // Armazena os resultados completos em localStorage para poderem ser lidos na página de relatório completo.
+      try {
+        localStorage.setItem('clarisenseReport', JSON.stringify(percent));
+      } catch (e) {
+        // Se localStorage não estiver disponível (p.ex. navegação privada), ignora.
+      }
+
       // Cria resumo parcial (metade do valor real)
       partialSummary.innerHTML = '';
       Object.entries(percent).forEach(([cat, val]) => {
@@ -298,12 +318,15 @@
         const div = document.createElement('div');
         div.classList.add('space-y-1');
         const level = getLevelText(val);
+        // Usa o rótulo amigável a partir de categoryLabels. Assim, em vez de mostrar "focus" ou "energy",
+        // o utilizador vê "Clareza Mental", "Energia Vital" ou "Paz Interior".
+        const friendly = categoryLabels[cat] || cat;
         div.innerHTML = `
-          <span class="text-sm font-medium capitalize text-slate-700">${cat}</span>
+          <span class="text-sm font-medium text-slate-700">${friendly}</span>
           <div class="w-full h-2 bg-slate-200 rounded">
             <div class="h-full bg-emerald-500 rounded" style="width: ${barWidth}%"></div>
           </div>
-          <p class="text-xs text-slate-500">Nível de ${cat}: ${level}</p>
+          <p class="text-xs text-slate-500">Nível de ${friendly}: ${level}</p>
         `;
         partialSummary.appendChild(div);
       });
@@ -380,8 +403,10 @@
         const div = document.createElement('div');
         div.classList.add('space-y-2');
         const analysis = getCategoryAnalysis(cat, val);
+        // Converte o identificador de categoria para o rótulo amigável.
+        const friendly = categoryLabels[cat] || cat;
         div.innerHTML = `
-          <h4 class="text-lg font-semibold capitalize">${cat} (${val.toFixed(0)}%)</h4>
+          <h4 class="text-lg font-semibold">${friendly} (${val.toFixed(0)}%)</h4>
           <div class="w-full h-2 bg-slate-200 rounded mb-1">
             <div class="h-full bg-emerald-500 rounded" style="width: ${val.toFixed(0)}%"></div>
           </div>
